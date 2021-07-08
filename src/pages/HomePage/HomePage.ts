@@ -6,34 +6,34 @@ import { camelize, classify } from "@/utils/strings";
 import { StringBuffer } from "@/utils/String";
 import { welcome } from './test';
 
-const str = ` {
-  "access_token": "sdfsdfsd",
-  "expires_in": "3600",
-  "token_type": "bearer",
-  "scope": "",
-  "refresh_token": "fwerfwefwefs",
-  "testArr":["1"],
-  "testArr1":[{"a": 1}],
-  "user": {
-    "id": "werwe",
-    "name": "fdsfsd",
-    "account":"fdsfsd",
-    "mail_address": "fsdfsdfdsfs@gmail.com",
-    "is_premium": false,
-    "x_restrict": 2,
-    "is_mail_authorized": true,
-    "require_policy_agreement": false
-  },
-  "response": {
-    "access_token": "fsdfsdfsd",
-    "expires_in": 3600,
-    "token_type": "bearer",
-    "scope": "",
-    "refresh_token": "fsdfsdfsd"
+// const str = ` {
+//   "access_token": "sdfsdfsd",
+//   "expires_in": "3600",
+//   "token_type": "bearer",
+//   "scope": "",
+//   "refresh_token": "fwerfwefwefs",
+//   "testArr":["1"],
+//   "testArr1":[{"a": 1}],
+//   "user": {
+//     "id": "werwe",
+//     "name": "fdsfsd",
+//     "account":"fdsfsd",
+//     "mail_address": "fsdfsdfdsfs@gmail.com",
+//     "is_premium": false,
+//     "x_restrict": 2,
+//     "is_mail_authorized": true,
+//     "require_policy_agreement": false
+//   },
+//   "response": {
+//     "access_token": "fsdfsdfsd",
+//     "expires_in": 3600,
+//     "token_type": "bearer",
+//     "scope": "",
+//     "refresh_token": "fsdfsdfsd"
 
-  }
-}`;
-console.log(welcome(JSON.parse(str)))
+//   }
+// }`;
+// console.log(welcome(JSON.parse(str)))
 
 interface ConfigData {
   label: string; // 名称可修改
@@ -61,7 +61,7 @@ export default defineComponent({
   name: 'HomePage',
   data(): Data {
     return {
-      inputString: str,
+      inputString: '',
       configData: null,
       outString: '',
       outConvertString: '',
