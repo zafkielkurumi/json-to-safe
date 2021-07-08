@@ -13,20 +13,38 @@ import {
   ElTableColumn,
   ElCheckbox,
   ElSelect,
-  ElOption
+  ElOption,
+  ElMessage,
 } from "element-plus";
 
-const ElComponets = [ElInput,ElOption, ElButton, ElCheckbox, ElTable, ElTableColumn,ElSelect];
+const ElComponets = [
+  ElInput,
+  ElOption,
+  ElButton,
+  ElCheckbox,
+  ElTable,
+  ElTableColumn,
+  ElSelect,
+];
+const plugins = [ElMessage];
 
 const app = createApp(App)
   .use(store)
   .use(router);
+
+  app.config.globalProperties.$message = ElMessage;
+
+  app.config.errorHandler = (err: any) => {
+    ElMessage.error(`${err?.message ?? err}`)
+  }
+
 ElComponets.forEach(component => {
   const name = component.name;
   app.component(name, component);
 });
+plugins.forEach(plugin => {
+  app.use(plugin);
+});
 installWidgets(app);
 installDirective(app);
 app.mount("#app");
-
-

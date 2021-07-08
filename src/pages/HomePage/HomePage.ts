@@ -83,7 +83,6 @@ export default defineComponent({
     },
     generate() {
       this.outString = '';
-     
       if (this.configData) {
         this.generateInterface(this.configData);
         if (this.fnChecked) {
@@ -92,6 +91,7 @@ export default defineComponent({
         }
         navigator.clipboard.writeText(this.outString + this.outConvertString).then(r => {
           console.log('success')
+          this.$message.success('已复制到剪切板')
         });
       }
     },

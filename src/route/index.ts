@@ -13,11 +13,8 @@ for (const path in Pages) {
 
 const routes: RouteRecordRaw[] = [{
     path: '',
-    redirect: '/home'
-}, {
-    path: '/home',
     component: Views['/HomePage'],
-},  { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/home'}]
+},   { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/home'}]
 
 export default createRouter({
     history: createWebHistory(),
