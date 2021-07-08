@@ -1,0 +1,7 @@
+.HomePage{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    height: calc(100vh - 60px);
+    gap: 20px;
+
+}

@@ -1,0 +1,9 @@
+{
+  "singleQuote": false,
+  "endOfLine": "lf",
+  "semi": true,
+  "trailingComma": "all",
+  "jsxBracketSameLine":  true,
+  "htmlWhitespaceSensitivity": "ignore",
+  "angleBracketSameLine ": true
+}
