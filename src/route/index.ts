@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
-import HelloWorld from '@/pages/HelloWorld.vue';
+const VITE_BASE_URL =  import.meta.env.VITE_BASE_URL as string;
+console.log(VITE_BASE_URL)
 
 const Pages = import.meta.glob('../pages/**/*.vue');
 const Views: {[prop: string]: any} = {};
@@ -20,6 +21,6 @@ const routes: RouteRecordRaw[] = [{
 },  { path: '/:pathMatch(.*)*', name: 'not-found', redirect: '/home'}]
 
 export default createRouter({
-    history: createWebHistory(),
+    history: createWebHistory(VITE_BASE_URL),
     routes
 })

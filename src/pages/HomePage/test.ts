@@ -1,5 +1,11 @@
+export interface C {
+  d: number;
+}
+
 export interface TestArr1 {
   a: number;
+  b: number[];
+  c: C;
 }
 
 export interface User {
@@ -64,12 +70,33 @@ interface ConditionItem {
 }
 // common end
 
+export function c(value?: any): C {
+  const conditions: ConditionItem[] = [
+    {
+      label: "d",
+      type: "Number",
+      convert: (val: any, defaultVal = 0) => val ?? defaultVal,
+    },
+  ];
+  return safeConvert(value, conditions);
+}
+
 export function testArr1(value?: any): TestArr1 {
   const conditions: ConditionItem[] = [
     {
       label: "a",
       type: "Number",
       convert: (val: any, defaultVal = 0) => val ?? defaultVal,
+    },
+    {
+      label: "b",
+      type: "Array",
+      convert: (val: any, defaultVal = []) => val ?? defaultVal,
+    },
+    {
+      label: "c",
+      type: "Object",
+      convert: (val: any) => c(val),
     },
   ];
   return safeConvert(value, conditions);

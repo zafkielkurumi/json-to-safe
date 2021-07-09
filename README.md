@@ -3,3 +3,4 @@ TODO
 -  多维数组
 -  按照jsonkey排序,jsonKey转换驼峰等
 -  额外的配置
+-  同名处理
