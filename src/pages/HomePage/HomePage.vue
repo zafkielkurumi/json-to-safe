@@ -6,10 +6,11 @@
         placeholder="请输入内容"
         v-model="inputString"
       ></el-input>
-      <div>
+      <div style="display:flex; align-items:center;">
         <el-checkbox v-model="fnChecked">转换方法</el-checkbox>
+        <el-input v-model="rootName" style="margin:0 8px; width:120px"></el-input>
         <el-button @click="formateJson()">格式化</el-button>
-        <el-button @click="generate()">生成</el-button>
+        <el-button @click="generate()">生成{{rootName}}</el-button>
       </div>
     </div>
     <div style="overflow:auto">

@@ -54,7 +54,8 @@ interface Data {
   configData: ConfigData | null;
   outString: string,
   outConvertString: string,
-  fnChecked: boolean
+  fnChecked: boolean,
+  rootName: string
 }
 
 export default defineComponent({
@@ -65,21 +66,21 @@ export default defineComponent({
       configData: null,
       outString: '',
       outConvertString: '',
-      fnChecked: false
+      fnChecked: false,
+      rootName: 'Welcome'
     }
   },
   methods: {
     tranferType(configData: ConfigData) {
       if (isArray(configData.type)) {
         const str = new Array(configData.deep).fill('[]').join('');
-
         return (isObject(configData.props[0]?.type) ? classify(configData.itemType!) : camelize(configData.itemType!)) + str 
       }
       return configData.type;
     },
     formateJson() {
       this.inputString =  JSON.stringify(JSON.parse(this.inputString), null, 2);
-      this.configData = this.toConfigJson(JSON.parse(this.inputString));
+      this.configData = this.toConfigJson(JSON.parse(this.inputString), this.rootName);
     },
     generate() {
       this.outString = '';
@@ -96,7 +97,7 @@ export default defineComponent({
       }
     },
     // 将json转换为可配置的数据
-    toConfigJson(json: anyObject | [], label = "Welcome", deep = 1): ConfigData {
+    toConfigJson(json: anyObject | [], label: string, deep = 1): ConfigData {
       const type = convertType(json);
       const config: ConfigData = {
         label,
@@ -218,7 +219,7 @@ export default defineComponent({
     },
     //
     generateConvert(configData: ConfigData) {
-      let str = convertFnString.replace('{0}', camelize(configData.label));
+      let str = convertFnString.replace('{0}', camelize(configData.label + 'Convert'));
       str = str.replace('{1}', classify(configData.label));
       const stringBUffer = new StringBuffer();
       
