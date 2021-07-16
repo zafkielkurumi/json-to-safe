@@ -1,7 +1,7 @@
 import { defineComponent } from "vue"
 import { commonString, conditionTpl, convertFnString, interfaceString, isDefaultTpl} from '@/constants';
 import { anyObject } from "@/models";
-import { convertType, isArray, isBoolean, isNumber, isObject, isString } from "@/utils/types";
+import { convertType, isArray, isBoolean, isNull, isNumber, isObject, isString } from "@/utils/types";
 import { camelize, classify } from "@/utils/strings";
 import { StringBuffer } from "@/utils/String";
 import { welcome } from './test';
@@ -191,6 +191,7 @@ export default defineComponent({
           stringBuffer.append(`/** ${prop.comment} */`)
           stringBuffer.newLine();
         }
+        const nullStr = prop.isNull ? '| null' : '';
         if (isObject(prop.type)) {
           stringBuffer.append(`${prop.label}: ${classify(prop.label)}`)
           this.generateInterface(prop);
@@ -202,14 +203,17 @@ export default defineComponent({
           }
         }
         if (isString(prop.type)) {
-          stringBuffer.append(`${prop.label}: string`)
+          stringBuffer.append(`${prop.label}: string ${nullStr}`)
         }
         if (isNumber(prop.type)) {
-          stringBuffer.append(`${prop.label}: number`)
+          stringBuffer.append(`${prop.label}: number ${nullStr}`)
         }
 
         if (isBoolean(prop.type)) {
-          stringBuffer.append(`${prop.label}: boolean`)
+          stringBuffer.append(`${prop.label}: boolean ${nullStr}`)
+        }
+        if (isNull(prop.type)) {
+          stringBuffer.append(`${prop.label}: null`)
         }
       
         stringBuffer.append(',');
@@ -227,33 +231,40 @@ export default defineComponent({
         let conditionStr = conditionTpl.replace('{0}', prop.label);
         if(isObject(prop.type)) {
           conditionStr = conditionStr.replace('{1}', 'Object');
-          conditionStr = conditionStr.replace('{2}', isDefaultTpl().replace('{0}', `${camelize(prop.label)}(val)`));
+          conditionStr = conditionStr.replace('{2}', isDefaultTpl().replace('{0}', `${camelize(prop.label + 'Convert')}(val)`));
           this.generateConvert(prop);
         } 
         if (isArray(prop.type)) {
           conditionStr = conditionStr.replace('{1}', 'Array');
           // TODO(KURUMI): 多维数组,目前1级
-         
+          const defaultVal = prop.default ? prop.default :(prop.isNull ? 'null' : '[]');
           if(prop.props.length) {
-            conditionStr = conditionStr.replace('{2}', isDefaultTpl().replace('{0}', `${camelize(prop.label)}(val)`));
+            conditionStr = conditionStr.replace('{2}', isDefaultTpl().replace('{0}', `${camelize(prop.label + 'Convert')}(val)`));
             this.generateConvert(prop.props[0]);
           } else {
-            conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', `[]`))
+            conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', defaultVal))
           }
           
         }
         if (isString(prop.type)) {
+          const defaultVal = prop.default ? prop.default :(prop.isNull ? 'null' : `''`);
           conditionStr = conditionStr.replace('{1}', 'String');
-          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', `''`))
+          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', defaultVal))
         }
         if (isNumber(prop.type)) {
+          const defaultVal = prop.default ? prop.default :(prop.isNull ? 'null' : `0`);
           conditionStr = conditionStr.replace('{1}', 'Number');
-          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', '0'))
+          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', defaultVal))
         }
 
         if (isBoolean(prop.type)) {
+          const defaultVal = prop.default ? prop.default :(prop.isNull ? 'null' : `false`);
           conditionStr = conditionStr.replace('{1}', 'Boolean');
-          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', 'true'))
+          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', defaultVal))
+        }
+        if (isNull(prop.type)) {
+          conditionStr = conditionStr.replace('{1}', 'Null');
+          conditionStr = conditionStr.replace('{2}', isDefaultTpl(true).replace('{0}', 'null'))
         }
         stringBUffer.append(conditionStr);
         stringBUffer.append(',');
@@ -261,6 +272,13 @@ export default defineComponent({
       stringBUffer.newLine();
       str = str.replace('{2}', stringBUffer.value());
       this.outConvertString += str;
+    },
+    //
+    onTypeChange(configData: ConfigData) {
+       configData.type = classify(configData.tsType);
+    },
+    onRootNameChange() {
+      // TODO
     }
   },
   // 

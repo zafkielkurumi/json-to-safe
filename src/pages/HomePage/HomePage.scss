@@ -1,6 +1,6 @@
 .HomePage{
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 2fr;
     height: calc(100vh - 60px);
     gap: 20px;
 
